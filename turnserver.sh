@@ -21,6 +21,7 @@ then
         echo relay-ip=$EXTERNAL_IP >> /etc/turnserver.conf
         echo external-ip=$EXTERNAL_IP >> /etc/turnserver.conf
     fi
+    
     echo listening-port=$PORT >> /etc/turnserver.conf
 
     if [ ! -z $LISTEN_ON_PUBLIC_IP ]

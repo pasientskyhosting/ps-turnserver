@@ -17,7 +17,7 @@ ADD turnserver.conf /etc/turnserver.conf
 RUN chmod +x /etc/service/turnserver/run
 
 EXPOSE 3478/udp
-EXPOSE 3500-3600/udp
+EXPOSE 49152-65000/udp
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
