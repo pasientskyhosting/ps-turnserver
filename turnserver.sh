@@ -1,5 +1,5 @@
 #!/bin/bash
-if [ -z $SKIP_AUTO_IP ] && [ -z $EXTERNAL_IP ]
+if [ -z $EXTERNAL_IP ]
 then
     if [ ! -z USE_IPV4 ]
     then
@@ -16,17 +16,22 @@ fi
 
 if [ ! -e /tmp/turnserver.configured ]
 then
-    if [ -z $SKIP_AUTO_IP ]
-    then
-        echo relay-ip=$EXTERNAL_IP >> /etc/turnserver.conf
-        echo external-ip=$EXTERNAL_IP >> /etc/turnserver.conf
-    fi
-    
     echo listening-port=$PORT >> /etc/turnserver.conf
 
-    if [ ! -z $LISTEN_ON_PUBLIC_IP ]
+    if [ ! -z $LISTENING_IP ]
     then
-        echo listening-ip=$EXTERNAL_IP >> /etc/turnserver.conf
+        echo listening-ip=$LISTENING_IP >> /etc/turnserver.conf
+    fi
+
+    if [ ! -z $EXTERNAL_IP ]
+    then
+        #echo relay-ip=$EXTERNAL_IP >> /etc/turnserver.conf
+        echo external-ip=$EXTERNAL_IP >> /etc/turnserver.conf
+    fi
+
+    if [ ! -z $RELAY_IP ]
+    then
+        echo relay-ip=$RELAY_IP >> /etc/turnserver.conf
     fi
 
     if [ ! -z $MYSQL_HOST ] && [ ! -z $MYSQL_DB ] && [ ! -z $MYSQL_USER ] && [ ! -z $MYSQL_PW ];
@@ -38,3 +43,6 @@ then
 fi
 
 exec /usr/bin/turnserver
+
+
+turnserver -L INT_IP -r someRealm -X EXT_IP/INT_IP  --no-dtls --no-tls
