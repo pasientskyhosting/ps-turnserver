@@ -25,7 +25,6 @@ then
 
     if [ ! -z $EXTERNAL_IP ]
     then
-        #echo relay-ip=$EXTERNAL_IP >> /etc/turnserver.conf
         echo external-ip=$EXTERNAL_IP >> /etc/turnserver.conf
     fi
 
