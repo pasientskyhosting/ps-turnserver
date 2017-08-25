@@ -42,6 +42,3 @@ then
 fi
 
 exec /usr/bin/turnserver
-
-
-turnserver -L INT_IP -r someRealm -X EXT_IP/INT_IP  --no-dtls --no-tls
