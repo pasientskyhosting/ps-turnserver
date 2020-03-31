@@ -1,18 +1,32 @@
 #!/bin/bash
 if [ ! -d /metrics ]; then
-    echo "Missing /metrics folder"
-    exit 1
+    mkdir -p /metrics
 fi
 
 while true;
 do
-    echo -e '# HELP clamav_virus_detected Total number of viruses detected.\n# TYPE clamav_virus_detected counter' > /metrics/turnserver_quota_detected.prom
-    if [ ! -f /detected.log ] && [[ $(tr -d "\r\n" < /detected.log|wc -c) -eq 0 ]] &>/dev/null; then
-        echo 'clamav_virus_detected{hostname="'${HOSTNAME}'"}' 0 >> /metrics/turnserver_quota_detected.prom
+
+    d1=$(date --date="-5 min" "+%b %_d %H:%M")
+    d2=$(date "+%b %_d %H:%M")
+    echo -e '# HELP turnserver_quota_exceeded_detected Total number of viruses detected.\n# TYPE turnserver_quota_exceeded_detected counter' > /metrics/turnserver_quota_exceeded_detected.prom
+    found=0
+    if [ ! -f /var/log/syslog ]; then
+        echo 'turnserver_quota_exceeded_detected{hostname="'${HOSTNAME}'"}' 0 >> /metrics/turnserver_quota_exceeded_detected.prom
     else
-        echo 'clamav_virus_detected{hostname="'${HOSTNAME}'"}' $(wc -l /detected.log | awk '{print $1}') >> /metrics/turnserver_quota_detected.prom
+        while IFS= read -r line; do
+            if [[ $line > $d1 && $line < $d2 || $line =~ $d2 ]]; then
+                if echo "$line" | grep "Allocation Bandwidth Quota Reached" > /dev/null; then
+                    echo 'turnserver_quota_exceeded_detected{hostname="'${HOSTNAME}'"}' 1 >> /metrics/turnserver_quota_exceeded_detected.prom
+                    found=1
+                fi
+            fi
+        done < /var/log/syslog
+
+        if [ $found == "0" ]; then
+            echo 'turnserver_quota_exceeded_detected{hostname="'${HOSTNAME}'"}' 0 >> /metrics/turnserver_quota_exceeded_detected.prom
+        fi
     fi
-    sleep 120
+    sleep 60
 done
 
 exit 0

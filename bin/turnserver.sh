@@ -61,4 +61,5 @@ then
     touch /tmp/turnserver.configured
 fi
 
+/usr/sbin/rsyslogd
 exec /usr/bin/turnserver -c /etc/turnserver.conf --prod

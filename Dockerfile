@@ -5,7 +5,7 @@ COPY bin/* /
 
 RUN apt-get update && apt-get dist-upgrade -y && \
  apt-get update -y && \
- apt-get install coturn net-tools supervisor -y && \
+ apt-get install coturn net-tools supervisor rsyslog -y && \
  apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
  chmod +x /metrics.sh && \
  chmod +x /turnserver.sh
