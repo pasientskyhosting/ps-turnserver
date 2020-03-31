@@ -11,6 +11,8 @@ RUN apt-get update && apt-get dist-upgrade -y && \
  chmod +x /turnserver.sh
 
 COPY conf/* /etc/
+COPY conf/logrotate.d/* /etc/logrotate.d/
+
 
 EXPOSE 3478/udp
 EXPOSE 49152-65000/udp

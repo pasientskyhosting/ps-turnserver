@@ -26,6 +26,8 @@ do
             echo 'turnserver_quota_exceeded_detected{hostname="'${HOSTNAME}'"}' 0 >> /metrics/turnserver_quota_exceeded_detected.prom
         fi
     fi
+
+    logrotate /etc/logrotate.conf
     sleep 60
 done
 
