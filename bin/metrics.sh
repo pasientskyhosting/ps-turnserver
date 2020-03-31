@@ -8,7 +8,7 @@ do
 
     d1=$(date --date="-5 min" "+%b %_d %H:%M")
     d2=$(date "+%b %_d %H:%M")
-    echo -e '# HELP turnserver_quota_exceeded_detected Total number of viruses detected.\n# TYPE turnserver_quota_exceeded_detected counter' > /metrics/turnserver_quota_exceeded_detected.prom
+    echo -e '# HELP turnserver_quota_exceeded_detected Integer boolean if bandwidth allocation has happen.\n# TYPE turnserver_quota_exceeded_detected counter' > /metrics/turnserver_quota_exceeded_detected.prom
     found=0
     if [ ! -f /var/log/syslog ]; then
         echo 'turnserver_quota_exceeded_detected{hostname="'${HOSTNAME}'"}' 0 >> /metrics/turnserver_quota_exceeded_detected.prom
