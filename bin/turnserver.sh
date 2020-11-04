@@ -14,14 +14,9 @@ then
     PORT=3478
 fi
 
-if [ -z "$MAX_BPS" ]
+if [ -z "$MYSQL_PORT" ]
 then
-    MAX_BPS=375000
-fi
-
-if [ -z "$BPS_CAPACITY" ]
-then
-    BPS_CAPACITY=37500000
+    MYSQL_PORT=3306
 fi
 
 if [ ! -e /tmp/turnserver.configured ]
@@ -55,11 +50,11 @@ then
 
     if [ -n "$MYSQL_HOST" ] && [ -n "$MYSQL_DB" ] && [ -n "$MYSQL_USER" ] && [ -n "$MYSQL_PW" ];
     then
-        echo "mysql-userdb=\"host=$MYSQL_HOST dbname=$MYSQL_DB user=$MYSQL_USER password=$MYSQL_PW\"" >> /etc/turnserver.conf
+        echo "mysql-userdb=\"host=$MYSQL_HOST dbname=$MYSQL_DB user=$MYSQL_USER password=$MYSQL_PW port=$MYSQL_PORT\"" >> /etc/turnserver.conf
     fi
 
     touch /tmp/turnserver.configured
 fi
 
-/usr/sbin/rsyslogd
+# /usr/sbin/rsyslogd
 exec /usr/bin/turnserver -c /etc/turnserver.conf --prod
