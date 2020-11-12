@@ -50,7 +50,7 @@ then
 
     if [ -n "$MYSQL_HOST" ] && [ -n "$MYSQL_DB" ] && [ -n "$MYSQL_USER" ] && [ -n "$MYSQL_PW" ];
     then
-        echo "mysql-userdb=\"host=$MYSQL_HOST dbname=$MYSQL_DB user=$MYSQL_USER password=$MYSQL_PW port=$MYSQL_PORT\"" >> /etc/turnserver.conf
+        echo "mysql-userdb=\"host=$MYSQL_HOST dbname=$MYSQL_DB user=$MYSQL_USER password=$MYSQL_PW port=$MYSQL_PORT connect_timeout=5 read_timeout=5\"" >> /etc/turnserver.conf
     fi
 
     touch /tmp/turnserver.configured
